@@ -1,0 +1,27 @@
+.royrai-credit {
+  display: inline-flex;
+  align-items: center;
+}
+
+.royrai-credit__link {
+  color: var(--royrai-credit-color, inherit);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--royrai-credit-gap, 8px);
+  font-size: var(--royrai-credit-font-size, 14px);
+}
+
+.royrai-credit__logo {
+  width: var(--royrai-credit-logo-size, 32px);
+  height: var(--royrai-credit-logo-size, 32px);
+  flex-shrink: 0;
+  display: inline-block;
+  background-color: var(--royrai-credit-color, currentColor);
+  -webkit-mask-image: var(--royrai-credit-logo-url);
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-image: var(--royrai-credit-logo-url);
+  mask-size: contain;
+  mask-repeat: no-repeat;
+}

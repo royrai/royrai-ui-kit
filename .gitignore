@@ -1,4 +1,28 @@
+# Dependencies
 node_modules/
+
+# Build outputs
 dist/
-*.tsbuildinfo
+storybook-static/
+
+# Logs
+yarn-debug.log*
+yarn-error.log*
+debug-storybook.log
+
+# Editor directories and files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
 .DS_Store
+Thumbs.db
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Claude Code commands
+.claude/

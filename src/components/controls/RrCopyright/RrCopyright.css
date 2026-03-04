@@ -1,0 +1,27 @@
+.rr-copyright {
+  display: inline-flex;
+  align-items: center;
+}
+
+.rr-copyright__link {
+  color: var(--rr-copyright-color, inherit);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--rr-copyright-gap, 8px);
+  font-size: var(--rr-copyright-font-size, 14px);
+}
+
+.rr-copyright__logo {
+  width: var(--rr-copyright-logo-size, 32px);
+  height: var(--rr-copyright-logo-size, 32px);
+  flex-shrink: 0;
+  display: inline-block;
+  background-color: var(--rr-copyright-color, currentColor);
+  -webkit-mask-image: var(--rr-copyright-logo-url);
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-image: var(--rr-copyright-logo-url);
+  mask-size: contain;
+  mask-repeat: no-repeat;
+}
