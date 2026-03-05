@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { RoyraiCredit } from "../components/controls/RoyraiCredit";
+import { RoyraiCredit } from "../../lib/components/controls/RoyraiCredit";
 
 const meta: Meta<typeof RoyraiCredit> = {
   title: "Controls/RoyraiCredit",

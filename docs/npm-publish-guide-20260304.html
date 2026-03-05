@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Publish an npm Package</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230FA4A0'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial Black,Arial,sans-serif' font-weight='900' font-size='38' fill='%23F7CE46'%3ER%3C/text%3E%3C/svg%3E">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&family=Secular+One&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <style>
+        :root {
+            /* Primary (Teal) */
+            --color-primary-dark: #0A7A77;
+            --color-primary: #0FA4A0;
+            --color-primary-medium: #4DBFBC;
+            --color-primary-light: #8ED6D4;
+            --color-primary-pale: #E5F5F4;
+
+            /* Secondary (Gold) */
+            --color-secondary-dark: #D4A830;
+            --color-secondary: #F7CE46;
+            --color-secondary-light: #FBDF7A;
+            --color-secondary-pale: #FEF5D9;
+
+            /* Neutrals */
+            --color-text-primary: #2D3748;
+            --color-text-secondary: #4A5568;
+            --color-text-tertiary: #718096;
+            --color-border: #E2E8F0;
+            --color-background: #FDFBF7;
+            --color-background-alt: #F7F5F0;
+
+            /* Status */
+            --color-success: #48BB78;
+            --color-success-light: #C6F6D5;
+            --color-warning: #ED8936;
+            --color-warning-light: #FEEBC8;
+            --color-error: #E53E3E;
+            --color-error-light: #FED7D7;
+
+            /* Fonts */
+            --font-heading: 'Secular One', cursive;
+            --font-body: 'Rubik', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-background);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            margin: 0;
+            padding: 2rem;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        a { color: var(--color-primary); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        h2 { font-family: var(--font-heading); color: var(--color-primary); font-size: 1.75rem; border-bottom: 2px solid var(--color-border); padding-bottom: 0.5rem; }
+        h3 { font-family: var(--font-heading); color: var(--color-primary-medium); font-size: 1.25rem; }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 50%, var(--color-primary-medium) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .header h1 { color: white; margin: 0; font-size: 2.25rem; font-family: var(--font-heading); border: none; }
+        .header .version { font-size: 0.9rem; opacity: 0.8; margin-left: 0.5rem; }
+        .header .subtitle { color: rgba(255,255,255,0.9); margin-top: 0.5rem; }
+        .header .meta-info { font-size: 0.875rem; color: rgba(255,255,255,0.7); margin-top: 1rem; }
+
+        /* Introduction */
+        .introduction {
+            background: var(--color-background-alt);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        /* TOC */
+        .toc { background: var(--color-background-alt); border: 1px solid var(--color-border); border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; page-break-after: always; }
+        .toc h3 { margin-top: 0; color: var(--color-primary-dark); font-family: var(--font-heading); }
+        .toc a { color: var(--color-primary); }
+        .toc ol { padding-left: 1.25rem; }
+        .toc li { margin-bottom: 0.5rem; }
+        .toc ol ol { margin-top: 0.5rem; }
+
+        /* Expand Controls */
+        .expand-controls {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .expand-controls button {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--color-primary);
+            background: #fff;
+            color: var(--color-primary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .expand-controls button:hover { background: var(--color-primary-pale); }
+        .expand-controls button.active {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        /* Phase */
+        .phase {
+            background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+            color: white;
+            padding: 1.25rem 1.5rem;
+            padding-left: 3.5rem;
+            border-radius: 12px;
+            margin: 2rem 0 1rem;
+            cursor: pointer;
+            position: relative;
+            page-break-before: always;
+        }
+        .phase:first-of-type { page-break-before: auto; }
+        .phase h2 { color: white; border: none; margin: 0; font-size: 1.3rem; }
+        .phase-subtitle { color: var(--color-primary-pale); margin-top: 0.25rem; font-size: 0.95rem; }
+        .phase-content {
+            overflow: hidden;
+            transition: max-height 0.5s ease, opacity 0.3s;
+            opacity: 1;
+        }
+        .phase-content.collapsed {
+            max-height: 0 !important;
+            opacity: 0;
+            overflow: hidden;
+        }
+
+        /* Phase Toggle Icon */
+        .phase .toggle-icon {
+            position: absolute; right: 1.25rem; top: 50%;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s; transform: translateY(-50%);
+        }
+        .phase .toggle-icon::after {
+            content: ''; width: 8px; height: 8px;
+            border-left: 2.5px solid #fff; border-bottom: 2.5px solid #fff;
+            transform: rotate(-45deg); margin-top: -2px;
+            transition: transform 0.35s ease;
+        }
+        .phase.collapsed .toggle-icon::after { transform: rotate(135deg); }
+        .phase .toggle-icon:hover { background: rgba(255,255,255,0.35); }
+
+        /* Step */
+        .step {
+            background: #fff;
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            page-break-inside: avoid;
+        }
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+        }
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: var(--color-primary);
+            color: white;
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .step-title {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            color: var(--color-text-primary);
+            flex-grow: 1;
+        }
+        .step-toggle {
+            width: 20px; height: 20px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .step-toggle::after {
+            content: ''; width: 6px; height: 6px;
+            border-left: 2px solid var(--color-text-tertiary);
+            border-bottom: 2px solid var(--color-text-tertiary);
+            transform: rotate(-45deg); margin-top: -2px;
+            transition: transform 0.35s ease;
+        }
+        .step.collapsed .step-toggle::after { transform: rotate(135deg); }
+        .step-body {
+            margin-top: 1rem;
+            padding-left: 2.75rem;
+            transition: max-height 0.3s ease, opacity 0.3s, margin 0.3s;
+        }
+        .step.collapsed .step-body {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            margin-top: 0;
+        }
+
+        /* Info Boxes */
+        .info-box {
+            padding: 1rem 1.25rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            page-break-inside: avoid;
+        }
+        .info-box.tip { background: var(--color-primary-pale); border-left: 4px solid var(--color-primary); }
+        .info-box.warning { background: var(--color-warning-light); border-left: 4px solid var(--color-warning); }
+        .info-box.success { background: var(--color-success-light); border-left: 4px solid var(--color-success); }
+        .info-box.important { background: var(--color-secondary-pale); border-left: 4px solid var(--color-secondary); }
+        .info-box-title { font-weight: 600; margin-bottom: 0.5rem; }
+
+        /* Link Box */
+        .link-box {
+            background: var(--color-background-alt);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.75rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            page-break-inside: avoid;
+        }
+        .link-box a { color: var(--color-primary); word-break: break-all; }
+        .link-box .description { font-size: 0.875rem; color: var(--color-text-secondary); margin-top: 0.25rem; }
+
+        /* Table */
+        .data-table { width: 100%; border-collapse: collapse; margin: 1rem 0; page-break-inside: avoid; }
+        .data-table th { background: var(--color-primary); color: white; font-family: var(--font-heading); padding: 0.75rem 1rem; text-align: left; }
+        .data-table td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--color-border); }
+        .data-table tr:nth-child(even) { background: var(--color-background-alt); }
+
+        /* Code Block */
+        .code-block {
+            position: relative;
+            margin: 0.75rem 0;
+            page-break-inside: avoid;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-family: var(--font-body);
+            z-index: 10;
+            opacity: 0.08;
+            transition: opacity 0.25s ease, background 0.2s;
+        }
+        .code-block:hover .copy-btn { opacity: 0.5; }
+        .copy-btn:hover { opacity: 1 !important; background: var(--color-primary-dark); }
+        pre[class*="language-"] {
+            direction: ltr !important;
+            text-align: left !important;
+            border-radius: 8px !important;
+            margin: 0 !important;
+        }
+
+        /* Inline Code */
+        :not(pre) > code {
+            background: var(--color-primary-pale);
+            color: var(--color-primary-dark);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            direction: ltr;
+            display: inline-block;
+        }
+
+        /* Explanation Block */
+        .explanation {
+            background: #f8f9fa;
+            border-left: 3px solid var(--color-primary-light);
+            padding: 0.75rem 1rem;
+            margin: 0.5rem 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--color-text-secondary);
+        }
+        .explanation strong { color: var(--color-text-primary); }
+
+        /* Comparison Box */
+        .comparison-box {
+            background: #fff;
+            border: 1px solid var(--color-border);
+            border-left: 6px solid var(--color-secondary);
+            border-radius: 0 12px 12px 0;
+            overflow: hidden;
+            margin: 1.5rem 0;
+            page-break-inside: avoid;
+        }
+        .comparison-box .box-header {
+            background: linear-gradient(135deg, var(--color-secondary-pale), #fff);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .comparison-box h3 { color: var(--color-secondary-dark); margin: 0; font-family: var(--font-heading); }
+        .comparison-box .box-content { padding: 1.5rem; }
+
+        /* Footer */
+        .footer {
+            background: var(--color-text-primary);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-top: 3rem;
+            text-align: center;
+        }
+        .footer .brand {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+        }
+        .footer a { color: var(--color-primary); }
+        .royrai-branding {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+        .royrai-branding a { color: #0FA4A0; font-weight: 500; }
+
+        /* Back to Top */
+        #back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 1000;
+        }
+        #back-to-top.visible { opacity: 1; visibility: visible; }
+        #back-to-top:hover { background: var(--color-primary-dark); }
+
+        /* Print */
+        @media print {
+            .phase-content.collapsed,
+            .step.collapsed .step-body {
+                max-height: none !important;
+                opacity: 1 !important;
+                overflow: visible !important;
+                margin-top: 1rem !important;
+            }
+            .phase { page-break-before: always; cursor: default; }
+            .phase:first-of-type { page-break-before: auto; }
+            .step, .info-box, .link-box, .code-block, .comparison-box, table { page-break-inside: avoid; }
+            .toc { page-break-after: always; }
+            #back-to-top, .expand-controls, .toggle-icon, .step-toggle, .copy-btn { display: none !important; }
+            body { padding: 0; background: white; }
+        }
+        @page { margin: 2cm; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .header h1 { font-size: 1.75rem; }
+            .phase h2 { font-size: 1.1rem; }
+            .step-body { padding-left: 0; }
+            .expand-controls { flex-wrap: wrap; }
+            #back-to-top { bottom: 1rem; right: 1rem; width: 40px; height: 40px; font-size: 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- Header -->
+    <div class="header">
+        <h1>How to Publish an npm Package <span class="version">v1.0</span></h1>
+        <p class="subtitle">A complete guide to publishing @royrai/ui-kit (or any scoped package) to the npm registry</p>
+        <p class="meta-info">Created: March 4, 2026</p>
+    </div>
+
+    <!-- Introduction -->
+    <div class="introduction">
+        <p>This guide walks you through the entire process of publishing a package to the npm registry — from creating your npm account to making your first public release. By the end, anyone in the world will be able to install your package with a single <code>npm install</code> command.</p>
+        <p>We'll cover four main phases: setting up your npm account, preparing your package for publishing, performing the actual publish, and managing updates. The entire process takes approximately 15–20 minutes for the first publish.</p>
+    </div>
+
+    <!-- Expand/Collapse Controls -->
+    <div class="expand-controls">
+        <button id="expand-all">Open All</button>
+        <button id="collapse-all">Close All</button>
+    </div>
+
+    <!-- TOC -->
+    <div class="toc">
+        <h3>Table of Contents</h3>
+        <ol>
+            <li><a href="#phase1" class="toc-link">Prerequisites — What you need before starting</a></li>
+            <li><a href="#phase2" class="toc-link">npm Account Setup — Create account and organization</a></li>
+            <li><a href="#phase3" class="toc-link">Prepare Your Package — Verify configuration before publishing</a></li>
+            <li><a href="#phase4" class="toc-link">Publish to npm — Push your package to the registry</a></li>
+            <li><a href="#phase5" class="toc-link">Updates &amp; Versioning — Publish new versions</a></li>
+            <li><a href="#phase6" class="toc-link">Using Your Published Package — Install it in other projects</a></li>
+        </ol>
+    </div>
+
+    <!-- ==================== PHASE 1 ==================== -->
+    <div class="phase" id="phase1" onclick="togglePhase(this)">
+        <h2>Phase 1: Prerequisites</h2>
+        <p class="phase-subtitle">What you need before starting</p>
+        <span class="toggle-icon"></span>
+    </div>
+    <div class="phase-content">
+        <p>Before you can publish, make sure you have the following tools installed and your package builds successfully.</p>
+
+        <div class="step">
+            <div class="step-header" onclick="toggleStep(this.parentElement)">
+                <span class="step-number">1</span>
+                <span class="step-title">Verify Node.js and npm</span>
+                <span class="step-toggle"></span>
+            </div>
+            <div class="step-body">
+                <p>You need Node.js (which includes npm) installed on your machine. Check your versions:</p>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code class="language-bash">node --version
+npm --version</code></pre>
+                </div>
+                <p>You need Node.js 18+ and npm 8+. If you don't have them, download from:</p>
+                <div class="link-box">
+                    <span>🔗</span>
+                    <div>
+                        <a href="https://nodejs.org" target="_blank">https://nodejs.org</a>
+                        <div class="description">Download the LTS version of Node.js</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header" onclick="toggleStep(this.parentElement)">
+                <span class="step-number">2</span>
+                <span class="step-title">Verify your package builds</span>
+                <span class="step-toggle"></span>
+            </div>
+            <div class="step-body">
+                <p>Run the typecheck and build commands to make sure everything compiles without errors:</p>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code class="language-bash">yarn typecheck && yarn build</code></pre>
+                </div>
+                <p>Both commands must pass with zero errors. If the build fails, fix the issues before proceeding — you cannot publish a broken package.</p>
+                <div class="info-box warning">
+                    <div class="info-box-title">⚠️ Don't skip this</div>
+                    <p>If you publish a package that doesn't build, everyone who installs it will get broken code. Always verify before publishing.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== PHASE 2 ==================== -->
+    <div class="phase" id="phase2" onclick="togglePhase(this)">
+        <h2>Phase 2: npm Account Setup</h2>
+        <p class="phase-subtitle">Create your account and organization on npmjs.com</p>
+        <span class="toggle-icon"></span>
+    </div>
+    <div class="phase-content">
+        <p>npm needs to know who you are before you can publish. You'll create an account and (optionally) an organization for your <code>@royrai</code> scope.</p>
+
+        <div class="step">
+            <div class="step-header" onclick="toggleStep(this.parentElement)">
+                <span class="step-number">1</span>
+                <span class="step-title">Create an npm account</span>
+                <span class="step-toggle"></span>
+            </div>
+            <div class="step-body">
+                <p>Go to the npm website and sign up for a free account:</p>
+                <div class="link-box">
+                    <span>🔗</span>
+                    <div>
+                        <a href="https://www.npmjs.com/signup" target="_blank">https://www.npmjs.com/signup</a>
+                        <div class="description">npm sign up page — create a free account</div>
+                    </div>
+                </div>
+                <p>Fill in your username, email, and password. You'll receive a verification email — click the link to activate your account.</p>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header" onclick="toggleStep(this.parentElement)">
+                <span class="step-number">2</span>
+                <span class="step-title">Create an organization (for @scope)</span>
+                <span class="step-toggle"></span>
+            </div>
+            <div class="step-body">
+                <p>Your package is named <code>@royrai/ui-kit</code>. The <code>@royrai</code> part is called a <strong>scope</strong>. To publish under a scope, you need an npm organization with that name.</p>
+                <div class="link-box">
+                    <span>🔗</span>
+                    <div>
+                        <a href="https://www.npmjs.com/org/create" target="_blank">https://www.npmjs.com/org/create</a>
+                        <div class="description">Create an npm organization</div>
+                    </div>
+                </div>
+                <ol>
+                    <li>Enter <code>royrai</code> as the organization name</li>
+                    <li>Select the <strong>free/unlimited</strong> plan (public packages only)</li>
+                    <li>Click <strong>Create</strong></li>
+                </ol>
+                <div class="info-box tip">
+                    <div class="info-box-title">💡 Scope alternatives</div>
+                    <p>If the org name <code>royrai</code> is taken, you can also use your personal username as a scope. For example, if your npm username is <code>royrai</code>, you can publish as <code>@royrai/ui-kit</code> without creating an organization.</p>
+                </div>
+
+                <div class="comparison-box">
+                    <div class="box-header">
+                        <h3>⚖️ Free vs Paid npm plans</h3>
+                    </div>
+                    <div class="box-content">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>Free</th>
+                                    <th>Pro / Teams ($7/mo)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Public packages</td>
+                                    <td>Unlimited</td>
+                                    <td>Unlimited</td>
+                                </tr>
+                                <tr>
+                                    <td>Private packages</td>
+                                    <td>Not available</td>
+                                    <td>Unlimited</td>
+                                </tr>
+                                <tr>
+                                    <td>Team members</td>
+                                    <td>Not available</td>
+                                    <td>Unlimited</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>For publishing <code>@royrai/ui-kit</code> as a public package, the <strong>free plan</strong> is sufficient.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header" onclick="toggleStep(this.parentElement)">
+                <span class="step-number">3</span>
+                <span class="step-title">Log in from the terminal</span>
+                <span class="step-toggle"></span>
+            </div>
+            <div class="step-body">
+                <p>Connect your local machine to your npm account so you can publish from the command line:</p>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code class="language-bash">npm login</code></pre>
+                </div>
+                <p>You'll be prompted for your username, password, and email. Once logged in, verify with:</p>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code class="language-bash">npm whoami</code></pre>
+                </div>
+                <p>This should print your npm username.</p>
+                <div class="info-box tip">
+                    <div class="info-box-title">💡 Stay logged in</div>
+                    <p>You only need to run <code>npm login</code> once per machine. npm stores your authentication token in <code>~/.npmrc</code> and remembers it across sessions.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== PHASE 3 ==================== -->
+    <div class="phase" id="phase3" onclick="togglePhase(this)">
+        <h2>Phase 3: Prepare Your Package</h2>
+        <p class="phase-subtitle">Verify your package.json and build output before publishing</p>
+        <span class="toggle-icon"></span>
+    </div>
+    <div class="phase-content">
+        <p>Before hitting publish, verify that your package is correctly configured. These checks ensure consumers get the right files and can import your components.</p>
+
+        <div class="step">
+            <div class="step-header" onclick="toggleStep(this.parentElement)">
+                <span class="step-number">1</span>
+                <span class="step-title">Check package.json essentials</span>
+                <span class="step-toggle"></span>
+            </div>
+            <div class="step-body">
+                <p>Open your <code>package.json</code> and verify these critical fields:</p>
+                <div class="explanation">
+                    <strong>What to check:</strong> These fields tell npm and consumers how to find and use your package. Getting them wrong means broken installs or missing files.<br>
+                    <strong>Key fields:</strong> <code>name</code> (must match your npm org/scope), <code>version</code> (semantic versioning), <code>files</code> (what gets uploaded), <code>exports</code> (import paths).
+                </div>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code class="language-json">{
+  "name": "@royrai/ui-kit",
+  "version": "0.1.02",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist", "README.md", "LICENSE"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./controls/RrBox": { "..." : "..." },
+    "./controls/RrDataGrid": { "..." : "..." }
+  }
+}</code></pre>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Field</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>name</code></td>
+                            <td>The package name consumers will use in <code>npm install</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>version</code></td>
+                            <td>Must be unique — npm rejects duplicate versions</td>
+                        </tr>
+                        <tr>
+                            <td><code>files</code></td>
+                            <td>Only these files/folders are uploaded to npm (keeps the package small)</td>
+                        </tr>
+                        <tr>
+                            <td><code>main</code></td>
+                            <td>Entry point for <code>require()</code> (CommonJS)</td>
+                        </tr>
+                        <tr>
+                            <td><code>module</code></td>
+                            <td>Entry point for <code>import</code> (ESM)</td>
+                        </tr>
+                        <tr>
+                            <td><code>types</code></td>
+                            <td>Entry point for TypeScript type definitions</td>
+                        </tr>
+                        <tr>
+                            <td><code>exports</code></td>
+                            <td>Maps import paths to actual files (e.g., <code>@royrai/ui-kit/controls/RrBox</code>)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header" onclick="toggleStep(this.parentElement)">
+                <span class="step-number">2</span>
+                <span class="step-title">Preview what will be published</span>
+                <span class="step-toggle"></span>
+            </div>
+            <div class="step-body">
+                <p>Before publishing, preview exactly which files npm will upload. This is a dry run — nothing gets published.</p>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code class="language-bash">npm pack --dry-run</code></pre>
+                </div>
+                <p>This prints a list of all files that would be included in the package. Verify that:</p>
+                <ol>
+                    <li>The <code>dist/</code> folder and all its contents are included</li>
+                    <li><code>README.md</code> and <code>LICENSE</code> are included</li>
+                    <li>Source code (<code>src/</code>), config files (<code>tsup.config.ts</code>), and <code>node_modules/</code> are <strong>NOT</strong> included</li>
+                </ol>
+                <div class="info-box warning">
+                    <div class="info-box-title">⚠️ Watch out for sensitive files</div>
+                    <p>Never publish <code>.env</code> files, API keys, or credentials. The <code>files</code> field in your package.json acts as an allowlist — only listed files get published. Your <code>.npmignore</code> file provides additional protection.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header" onclick="toggleStep(this.parentElement)">
+                <span class="step-number">3</span>
+                <span class="step-title">Build one final time</span>
+                <span class="step-toggle"></span>
+            </div>
+            <div class="step-body">
+                <p>Always build fresh right before publishing to ensure the <code>dist/</code> folder matches your latest source code:</p>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code class="language-bash">yarn typecheck && yarn build</code></pre>
+                </div>
+                <div class="info-box tip">
+                    <div class="info-box-title">💡 Automatic pre-publish check</div>
+                    <p>Your package.json already has <code>"prepublishOnly": "yarn typecheck && yarn build"</code>. This script runs automatically before every <code>npm publish</code>, so even if you forget to build manually, npm will do it for you.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== PHASE 4 ==================== -->
+    <div class="phase" id="phase4" onclick="togglePhase(this)">
+        <h2>Phase 4: Publish to npm</h2>
+        <p class="phase-subtitle">Push your package to the registry</p>
+        <span class="toggle-icon"></span>
+    </div>
+    <div class="phase-content">
+        <p>This is the moment — one command makes your package available to the world.</p>
+
+        <div class="step">
+            <div class="step-header" onclick="toggleStep(this.parentElement)">
+                <span class="step-number">1</span>
+                <span class="step-title">Publish the package</span>
+                <span class="step-toggle"></span>
+            </div>
+            <div class="step-body">
+                <p>From your project root directory, run:</p>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code class="language-bash">npm publish --access public</code></pre>
+                </div>
+                <div class="explanation">
+                    <strong>Why <code>--access public</code>?</strong> Scoped packages (starting with <code>@</code>) default to private on npm. The <code>--access public</code> flag explicitly makes the package public and free. Without it, npm will reject the publish unless you have a paid plan.
+                </div>
+                <p>npm will:</p>
+                <ol>
+                    <li>Run your <code>prepublishOnly</code> script (typecheck + build)</li>
+                    <li>Pack the files listed in <code>"files"</code></li>
+                    <li>Upload the tarball to the npm registry</li>
+                    <li>Print a success message with the package URL</li>
+                </ol>
+                <div class="info-box success">
+                    <div class="info-box-title">✅ That's it!</div>
+                    <p>Your package is now live. Anyone can install it with <code>npm install @royrai/ui-kit</code></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header" onclick="toggleStep(this.parentElement)">
+                <span class="step-number">2</span>
+                <span class="step-title">Verify on npmjs.com</span>
+                <span class="step-toggle"></span>
+            </div>
+            <div class="step-body">
+                <p>After publishing, verify that your package appears on the npm website:</p>
+                <div class="link-box">
+                    <span>🔗</span>
+                    <div>
+                        <a href="https://www.npmjs.com/package/@royrai/ui-kit" target="_blank">https://www.npmjs.com/package/@royrai/ui-kit</a>
+                        <div class="description">Your package page on npm (visible after publishing)</div>
+                    </div>
+                </div>
+                <p>The page shows your README, version, dependencies, and download stats. It may take a minute to appear after the first publish.</p>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header" onclick="toggleStep(this.parentElement)">
+                <span class="step-number">3</span>
+                <span class="step-title">Common errors and fixes</span>
+                <span class="step-toggle"></span>
+            </div>
+            <div class="step-body">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Error</th>
+                            <th>Cause</th>
+                            <th>Fix</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>E403</code></td>
+                            <td>You don't have permission to publish under this scope</td>
+                            <td>Create the npm org first, or check that you're logged in as the right user</td>
+                        </tr>
+                        <tr>
+                            <td><code>E402</code></td>
+                            <td>Trying to publish a private scoped package on a free plan</td>
+                            <td>Add <code>--access public</code> to the publish command</td>
+                        </tr>
+                        <tr>
+                            <td><code>EPUBLISHCONFLICT</code></td>
+                            <td>This exact version already exists on the registry</td>
+                            <td>Bump the version number in package.json</td>
+                        </tr>
+                        <tr>
+                            <td><code>ENEEDAUTH</code></td>
+                            <td>Not logged in</td>
+                            <td>Run <code>npm login</code> first</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== PHASE 5 ==================== -->
+    <div class="phase" id="phase5" onclick="togglePhase(this)">
+        <h2>Phase 5: Updates &amp; Versioning</h2>
+        <p class="phase-subtitle">How to publish new versions of your package</p>
+        <span class="toggle-icon"></span>
+    </div>
+    <div class="phase-content">
+        <p>After your first publish, you'll need to release updates. npm uses <strong>semantic versioning</strong> — each version number communicates the type of change to consumers.</p>
+
+        <div class="step">
+            <div class="step-header" onclick="toggleStep(this.parentElement)">
+                <span class="step-number">1</span>
+                <span class="step-title">Understand semantic versioning</span>
+                <span class="step-toggle"></span>
+            </div>
+            <div class="step-body">
+                <p>Version numbers follow the format <code>MAJOR.MINOR.PATCH</code>:</p>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Part</th>
+                            <th>When to bump</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>MAJOR</strong></td>
+                            <td>Breaking changes — consumers must update their code</td>
+                            <td><code>1.0.0</code> → <code>2.0.0</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>MINOR</strong></td>
+                            <td>New features — backwards compatible</td>
+                            <td><code>1.0.0</code> → <code>1.1.0</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>PATCH</strong></td>
+                            <td>Bug fixes, style tweaks — no API changes</td>
+                            <td><code>1.0.0</code> → <code>1.0.1</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="info-box important">
+                    <div class="info-box-title">📌 Critical rule</div>
+                    <p>npm does <strong>not</strong> allow publishing the same version twice. Every publish must have a unique version number. If you try to re-publish an existing version, npm will reject it.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header" onclick="toggleStep(this.parentElement)">
+                <span class="step-number">2</span>
+                <span class="step-title">Bump the version</span>
+                <span class="step-toggle"></span>
+            </div>
+            <div class="step-body">
+                <p>You can bump the version manually in <code>package.json</code>, or use the npm command:</p>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code class="language-bash"># For a bug fix:
+npm version patch
+
+# For a new feature:
+npm version minor
+
+# For a breaking change:
+npm version major</code></pre>
+                </div>
+                <div class="explanation">
+                    <strong>What this does:</strong> The <code>npm version</code> command updates the <code>version</code> field in <code>package.json</code>, creates a git commit, and tags it. It's a shortcut for doing all three manually.
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header" onclick="toggleStep(this.parentElement)">
+                <span class="step-number">3</span>
+                <span class="step-title">Publish the update</span>
+                <span class="step-toggle"></span>
+            </div>
+            <div class="step-body">
+                <p>After bumping the version, publish the same way as before:</p>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code class="language-bash">npm publish --access public</code></pre>
+                </div>
+                <p>Consumers who have your package installed can update with:</p>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code class="language-bash">npm update @royrai/ui-kit</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== PHASE 6 ==================== -->
+    <div class="phase" id="phase6" onclick="togglePhase(this)">
+        <h2>Phase 6: Using Your Published Package</h2>
+        <p class="phase-subtitle">How consumers install and use it in their projects</p>
+        <span class="toggle-icon"></span>
+    </div>
+    <div class="phase-content">
+        <p>Once published, here's how anyone (including yourself) uses the package in a new project.</p>
+
+        <div class="step">
+            <div class="step-header" onclick="toggleStep(this.parentElement)">
+                <span class="step-number">1</span>
+                <span class="step-title">Install the package</span>
+                <span class="step-toggle"></span>
+            </div>
+            <div class="step-body">
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code class="language-bash">npm install @royrai/ui-kit</code></pre>
+                </div>
+                <p>This downloads the package from the npm registry and adds it to your project's <code>node_modules/</code> folder.</p>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header" onclick="toggleStep(this.parentElement)">
+                <span class="step-number">2</span>
+                <span class="step-title">Install peer dependencies (if needed)</span>
+                <span class="step-toggle"></span>
+            </div>
+            <div class="step-body">
+                <p>Which peer dependencies you need depends on which components you import:</p>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Needs MUI?</th>
+                            <th>Extra peer deps</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>RrSocialIcons</td>
+                            <td>No</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td>RrTimeWheelPicker</td>
+                            <td>No</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td>RrTimeWheelColumn</td>
+                            <td>No</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td>RoyraiCopyright</td>
+                            <td>No</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td>RoyraiCredit</td>
+                            <td>No</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td>RrCopyright</td>
+                            <td>No</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td>RrBox</td>
+                            <td><strong>Yes</strong></td>
+                            <td><code>@mui/material @emotion/react @emotion/styled</code></td>
+                        </tr>
+                        <tr>
+                            <td>RrDataGrid</td>
+                            <td><strong>Yes</strong></td>
+                            <td><code>@mui/material @mui/x-data-grid @emotion/react @emotion/styled</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>For MUI-based components, install the required peer dependencies:</p>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code class="language-bash"># Only if using RrBox or RrDataGrid:
+npm install @mui/material @emotion/react @emotion/styled
+
+# Only if using RrDataGrid:
+npm install @mui/x-data-grid</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header" onclick="toggleStep(this.parentElement)">
+                <span class="step-number">3</span>
+                <span class="step-title">Import components</span>
+                <span class="step-toggle"></span>
+            </div>
+            <div class="step-body">
+                <p>Import individual components using the per-component paths for minimal bundle size:</p>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code class="language-javascript">// Individual imports (recommended — minimal bundle)
+import { WhatsAppIcon } from "@royrai/ui-kit/controls/RrSocialIcons";
+import { RrTimeWheelPicker } from "@royrai/ui-kit/controls/RrTimeWheelPicker";
+import { RrDataGrid } from "@royrai/ui-kit/controls/RrDataGrid";
+
+// Or import everything at once (larger bundle)
+import { WhatsAppIcon, RrDataGrid } from "@royrai/ui-kit";</code></pre>
+                </div>
+                <div class="info-box tip">
+                    <div class="info-box-title">💡 Per-component imports are better</div>
+                    <p>Using the specific path (e.g., <code>@royrai/ui-kit/controls/RrSocialIcons</code>) ensures only that component's code is included in your app's bundle. The full import (<code>@royrai/ui-kit</code>) pulls in everything.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="brand">npm Publishing Guide</div>
+        <p>You now have everything you need to publish, update, and share your npm package with the world.</p>
+        <div class="royrai-branding">
+            <svg width="40" height="40" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                <rect width="64" height="64" rx="14" fill="#0FA4A0"/>
+                <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="38" fill="#F7CE46">R</text>
+            </svg>
+            <span>Created by <a href="https://royrai.com" target="_blank">Royrai Automation</a></span>
+        </div>
+    </div>
+
+</div>
+
+<button id="back-to-top" title="Back to top">↑</button>
+
+<script>
+    // Toggle phase
+    function togglePhase(phaseEl) {
+        const content = phaseEl.nextElementSibling;
+        phaseEl.classList.toggle("collapsed");
+        content.classList.toggle("collapsed");
+        updateExpandButtons();
+    }
+
+    // Toggle step
+    function toggleStep(stepEl) {
+        stepEl.classList.toggle("collapsed");
+        updateExpandButtons();
+    }
+
+    // Expand/Collapse all
+    document.getElementById("expand-all").addEventListener("click", function() {
+        document.querySelectorAll(".phase").forEach(function(phase) {
+            phase.classList.remove("collapsed");
+        });
+        document.querySelectorAll(".phase-content").forEach(function(content) {
+            content.classList.remove("collapsed");
+        });
+        document.querySelectorAll(".step").forEach(function(step) {
+            step.classList.remove("collapsed");
+        });
+        updateExpandButtons();
+    });
+
+    document.getElementById("collapse-all").addEventListener("click", function() {
+        document.querySelectorAll(".phase").forEach(function(phase) {
+            phase.classList.add("collapsed");
+        });
+        document.querySelectorAll(".phase-content").forEach(function(content) {
+            content.classList.add("collapsed");
+        });
+        document.querySelectorAll(".step").forEach(function(step) {
+            step.classList.add("collapsed");
+        });
+        updateExpandButtons();
+    });
+
+    function updateExpandButtons() {
+        var allPhases = document.querySelectorAll(".phase-content");
+        var allCollapsed = true;
+        var allExpanded = true;
+        allPhases.forEach(function(content) {
+            if (content.classList.contains("collapsed")) {
+                allExpanded = false;
+            } else {
+                allCollapsed = false;
+            }
+        });
+        var expandBtn = document.getElementById("expand-all");
+        var collapseBtn = document.getElementById("collapse-all");
+        expandBtn.classList.toggle("active", allExpanded);
+        collapseBtn.classList.toggle("active", allCollapsed);
+    }
+
+    // Back to top
+    var backToTop = document.getElementById("back-to-top");
+    window.addEventListener("scroll", function() {
+        backToTop.classList.toggle("visible", window.scrollY > 400);
+    });
+    backToTop.addEventListener("click", function() {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    // Copy code
+    function copyCode(btn) {
+        var code = btn.nextElementSibling.querySelector("code").textContent;
+        navigator.clipboard.writeText(code).then(function() {
+            btn.textContent = "✓ Copied";
+            setTimeout(function() { btn.textContent = "Copy"; }, 2000);
+        });
+    }
+
+    // TOC auto-expand on navigation
+    document.querySelectorAll(".toc-link").forEach(function(link) {
+        link.addEventListener("click", function(event) {
+            event.preventDefault();
+            var targetId = this.getAttribute("href").substring(1);
+            var targetPhase = document.getElementById(targetId);
+            if (targetPhase) {
+                targetPhase.classList.remove("collapsed");
+                var content = targetPhase.nextElementSibling;
+                if (content && content.classList.contains("phase-content")) {
+                    content.classList.remove("collapsed");
+                }
+                updateExpandButtons();
+                setTimeout(function() {
+                    targetPhase.scrollIntoView({ behavior: "smooth" });
+                }, 80);
+            }
+        });
+    });
+
+    // Initialize
+    updateExpandButtons();
+</script>
+</body>
+</html>

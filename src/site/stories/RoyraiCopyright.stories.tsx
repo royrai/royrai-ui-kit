@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { RoyraiCopyright } from "../components/controls/RoyraiCopyright";
+import { RoyraiCopyright } from "../../lib/components/controls/RoyraiCopyright";
 
 const meta: Meta<typeof RoyraiCopyright> = {
   title: "Controls/RoyraiCopyright",

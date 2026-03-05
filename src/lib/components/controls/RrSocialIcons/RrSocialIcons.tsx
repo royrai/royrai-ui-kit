@@ -7,7 +7,7 @@
  * - Pass color="currentColor" to inherit parent's text color
  */
 
-interface IconProps {
+export interface IconProps {
   size?: number;
   className?: string;
   /** Override the default color. Use "white" on colored backgrounds, "currentColor" to inherit. */

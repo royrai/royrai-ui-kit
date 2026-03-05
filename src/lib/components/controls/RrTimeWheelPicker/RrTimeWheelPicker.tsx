@@ -1,28 +1,18 @@
 import { useCallback } from "react";
-import { RrTimeWheelColumn } from "./RrTimeWheelColumn";
+import { RrTimeWheelColumn } from "../RrTimeWheelColumn";
+import {
+  type RrTimeWheelPickerValue,
+  type RrTimeWheelPickerLabels,
+  type RrTimeWheelPickerColors,
+  type RrTimeWheelPickerProps,
+} from "./RrTimeWheelPicker.types";
 
-export interface RrTimeWheelPickerValue {
-  hours: number;
-  minutes: number;
-  seconds: number;
-}
-
-export interface RrTimeWheelPickerLabels {
-  title: string;
-  hours: string;
-  minutes: string;
-  seconds: string;
-}
-
-export interface RrTimeWheelPickerColors {
-  primary?: string;
-  container?: string;
-  containerShadow?: string;
-  titleText?: string;
-  labelText?: string;
-  fadeBackground?: string;
-  highlightBackground?: string;
-}
+export type {
+  RrTimeWheelPickerValue,
+  RrTimeWheelPickerLabels,
+  RrTimeWheelPickerColors,
+  RrTimeWheelPickerProps,
+} from "./RrTimeWheelPicker.types";
 
 const DEFAULT_COLORS = {
   primary: "#0fa4a0",
@@ -33,13 +23,6 @@ const DEFAULT_COLORS = {
   fadeBackground: "rgba(248, 246, 241, 0.95)",
   highlightBackground: "rgba(15, 164, 160, 0.1)",
 } as const;
-
-export interface RrTimeWheelPickerProps {
-  selectedTime: RrTimeWheelPickerValue;
-  onChange: (time: RrTimeWheelPickerValue) => void;
-  labels: RrTimeWheelPickerLabels;
-  colors?: RrTimeWheelPickerColors;
-}
 
 export function RrTimeWheelPicker({
   selectedTime,

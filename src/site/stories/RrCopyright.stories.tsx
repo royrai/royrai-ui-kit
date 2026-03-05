@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { RrCopyright } from "../components/controls/RrCopyright";
-import royraiLogo from "../components/controls/RoyraiCredit/RoyraiLogo.svg";
+import { RrCopyright } from "../../lib/components/controls/RrCopyright";
+import royraiLogo from "../../lib/components/controls/RoyraiCredit/RoyraiLogo.svg";
 
 const meta: Meta<typeof RrCopyright> = {
   title: "Controls/RrCopyright",

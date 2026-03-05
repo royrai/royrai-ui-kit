@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { RrBox } from "../components/controls/RrBox";
+import { RrBox } from "../../lib/components/controls/RrBox";
 
 const meta: Meta<typeof RrBox> = {
   title: "Controls/RrBox",
