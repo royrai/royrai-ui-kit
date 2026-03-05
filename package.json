@@ -1,6 +1,6 @@
 {
   "name": "@royrai/ui-kit",
-  "version": "1.0.01",
+  "version": "1.1.00",
   "description": "Reusable React/TypeScript UI component library built on MUI with bilingual (Hebrew/English) support",
   "license": "MIT",
   "author": "royrai",
@@ -9,12 +9,14 @@
     "url": "https://github.com/royrai/royrai-ui-kit.git"
   },
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
+    "build:lib": "tsup",
+    "dev:lib": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "prepublishOnly": "yarn typecheck && yarn build"
+    "dev": "concurrently \"vite\" \"storybook dev -p 6006 --no-open\"",
+    "build": "vite build && storybook build -o site-dist/storybook",
+    "prepublishOnly": "yarn typecheck && yarn build:lib"
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -78,16 +80,36 @@
   },
   "typesVersions": {
     "*": {
-      "controls/RrBox": ["./dist/controls/RrBox/index.d.ts"],
-      "controls/RrBox/mui": ["./dist/controls/RrBox/mui/index.d.ts"],
-      "controls/RrDataGrid": ["./dist/controls/RrDataGrid/index.d.ts"],
-      "controls/RrDataGrid/mui": ["./dist/controls/RrDataGrid/mui/index.d.ts"],
-      "controls/RrSocialIcons": ["./dist/controls/RrSocialIcons/index.d.ts"],
-      "controls/RrTimeWheelColumn": ["./dist/controls/RrTimeWheelColumn/index.d.ts"],
-      "controls/RrTimeWheelPicker": ["./dist/controls/RrTimeWheelPicker/index.d.ts"],
-      "controls/RoyraiCopyright": ["./dist/controls/RoyraiCopyright/index.d.ts"],
-      "controls/RoyraiCredit": ["./dist/controls/RoyraiCredit/index.d.ts"],
-      "controls/RrCopyright": ["./dist/controls/RrCopyright/index.d.ts"]
+      "controls/RrBox": [
+        "./dist/controls/RrBox/index.d.ts"
+      ],
+      "controls/RrBox/mui": [
+        "./dist/controls/RrBox/mui/index.d.ts"
+      ],
+      "controls/RrDataGrid": [
+        "./dist/controls/RrDataGrid/index.d.ts"
+      ],
+      "controls/RrDataGrid/mui": [
+        "./dist/controls/RrDataGrid/mui/index.d.ts"
+      ],
+      "controls/RrSocialIcons": [
+        "./dist/controls/RrSocialIcons/index.d.ts"
+      ],
+      "controls/RrTimeWheelColumn": [
+        "./dist/controls/RrTimeWheelColumn/index.d.ts"
+      ],
+      "controls/RrTimeWheelPicker": [
+        "./dist/controls/RrTimeWheelPicker/index.d.ts"
+      ],
+      "controls/RoyraiCopyright": [
+        "./dist/controls/RoyraiCopyright/index.d.ts"
+      ],
+      "controls/RoyraiCredit": [
+        "./dist/controls/RoyraiCredit/index.d.ts"
+      ],
+      "controls/RrCopyright": [
+        "./dist/controls/RrCopyright/index.d.ts"
+      ]
     }
   },
   "files": [
@@ -96,12 +118,24 @@
     "LICENSE"
   ],
   "peerDependenciesMeta": {
-    "@emotion/react": { "optional": true },
-    "@emotion/styled": { "optional": true },
-    "@mui/icons-material": { "optional": true },
-    "@mui/material": { "optional": true },
-    "@mui/x-data-grid": { "optional": true },
-    "@mui/x-date-pickers": { "optional": true }
+    "@emotion/react": {
+      "optional": true
+    },
+    "@emotion/styled": {
+      "optional": true
+    },
+    "@mui/icons-material": {
+      "optional": true
+    },
+    "@mui/material": {
+      "optional": true
+    },
+    "@mui/x-data-grid": {
+      "optional": true
+    },
+    "@mui/x-date-pickers": {
+      "optional": true
+    }
   },
   "peerDependencies": {
     "@emotion/react": "^11.0.0",
@@ -125,8 +159,11 @@
     "@storybook/react-vite": "^8.6.14",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "@vitejs/plugin-react": "^5.1.4",
+    "concurrently": "^9.2.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "react-router-dom": "^7.13.1",
     "storybook": "^8.6.14",
     "tsup": "^8.0.0",
     "typescript": "^5.0.0",

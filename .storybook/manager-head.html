@@ -1,0 +1,30 @@
+<style>
+  .sb-back-to-site {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    z-index: 9999;
+    background: #0FA4A0;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: background 0.2s;
+  }
+  .sb-back-to-site:hover {
+    background: #0A7A77;
+  }
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const link = document.createElement('a');
+    link.href = '/';
+    link.className = 'sb-back-to-site';
+    link.textContent = '\u2190 Back to Site';
+    document.body.appendChild(link);
+  });
+</script>
