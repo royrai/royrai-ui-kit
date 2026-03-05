@@ -4,9 +4,9 @@
 
 ---
 
-## Foundation
+## 1. Foundation
 
-### 1. Change Approval Policy
+### 1.1. Change Approval Policy
 
 **NEVER make changes without explicit permission.**
 
@@ -20,7 +20,7 @@
 - When the implementation requires choosing between approaches (e.g., using an existing component vs creating a new one, native HTML vs a library wrapper), present the options and ask — don't decide on your own
 - When replicating a pattern from another project, replicate the architecture exactly. If the target project is missing a dependency, flag it and ask
 
-### 2. Terminology
+### 1.2. Terminology
 
 | Term | Meaning |
 |------|---------|
@@ -30,9 +30,9 @@
 
 ---
 
-## Architecture
+## 2. Architecture
 
-### 3. File Organization
+### 2.1. File Organization
 
 ```
 /src
@@ -93,7 +93,7 @@
 | Is it a page structure/navigation element? | `layout/` | Continue ↓ |
 | Is it a generic, reusable UI primitive? | `controls/` | Reconsider design |
 
-### 4. Barrel Export Policy
+### 2.2. Barrel Export Policy
 
 #### components/index.ts Rules
 
@@ -113,9 +113,9 @@
 
 ---
 
-## Coding Standards
+## 3. Coding Standards
 
-### 5. No Code Duplication
+### 3.1. No Code Duplication
 
 **Never duplicate code.**
 
@@ -147,7 +147,7 @@ Before implementing something new, check if a similar solution already exists. I
 - When modifying a page or component, check if other parts of the codebase have the same pattern and flag any inconsistencies.
 - When creating a new reusable solution, search for all places that could benefit from it and suggest applying it everywhere.
 
-### 6. Dead Code
+### 3.2. Dead Code
 
 **Do not remove dead code automatically.**
 
@@ -165,7 +165,7 @@ When approved, a "clean up dead code" pass includes:
 4. Identify files that are no longer imported anywhere
 5. Remove all confirmed dead code and verify with `tsc --noEmit`
 
-### 7. Naming Conventions
+### 3.3. Naming Conventions
 
 #### Variable and Constant Names
 
@@ -254,7 +254,7 @@ interface Column<TItem> {
 | `<K>` for keys | `<TKey>` |
 | `<V>` for values | `<TValue>` |
 
-### 8. Always Use Curly Brackets
+### 3.4. Always Use Curly Brackets
 
 **All `if`, `else`, `for`, `while`, and `do` statements must use curly brackets, even with a single statement.**
 
@@ -272,11 +272,11 @@ for (const item of items) {
 }
 ```
 
-### 9. Styling
+### 3.5. Styling
 
 This project uses a layered styling approach. Each layer has a specific purpose — use the **first approach that fits** from the priority order below.
 
-#### 9.1 Styling Priority Order
+#### 3.5.1 Styling Priority Order
 
 | Priority | Approach | When to use |
 |----------|----------|-------------|
@@ -288,7 +288,7 @@ This project uses a layered styling approach. Each layer has a specific purpose 
 
 ---
 
-#### 9.2 Tailwind Classes (Primary)
+#### 3.5.2 Tailwind Classes (Primary)
 
 Tailwind is the project's primary styling method, used across all pages, layout components, and feature components.
 
@@ -307,7 +307,7 @@ Tailwind is the project's primary styling method, used across all pages, layout 
 
 ---
 
-#### 9.3 appTheme Constants
+#### 3.5.3 appTheme Constants
 
 `appTheme` (defined in `constants/theme.ts` via MUI `createTheme`) provides semantic color tokens used throughout the app. It is the **single source of truth** for colors that Tailwind doesn't cover — field states, menu states, task status/priority colors, shadows, and opacity variants.
 
@@ -346,7 +346,7 @@ sx={{ backgroundColor: appTheme.palette.field.backgroundFocused }}
 
 ---
 
-#### 9.4 MUI `sx` Prop
+#### 3.5.4 MUI `sx` Prop
 
 Used **only on MUI components** (components prefixed with `Mui` inside Rr wrappers) to style internal MUI slots that Tailwind cannot reach (e.g., `.MuiOutlinedInput-root`, `fieldset`, `&.Mui-focused`).
 
@@ -365,7 +365,7 @@ Used **only on MUI components** (components prefixed with `Mui` inside Rr wrappe
 
 ---
 
-#### 9.5 CSS File + CSS Variables (Reusable Controls)
+#### 3.5.5 CSS File + CSS Variables (Reusable Controls)
 
 Used for **reusable control components** that consumers need to restyle externally (e.g., controls intended for a UI kit).
 
@@ -401,7 +401,7 @@ const cssVars = {
 
 ---
 
-#### 9.6 Inline `style={}` (Dynamic Runtime Values Only)
+#### 3.5.6 Inline `style={}` (Dynamic Runtime Values Only)
 
 **Only for values that are truly dynamic at runtime.** If the value doesn't change based on props, state, or computed data, use Tailwind instead.
 
@@ -430,7 +430,7 @@ const cssVars = {
 
 ---
 
-#### 9.7 Color Constants
+#### 3.5.7 Color Constants
 
 **Never use explicit color values in components.**
 
@@ -457,7 +457,7 @@ import { appTheme } from '@/constants/theme';
 
 ---
 
-#### 9.8 Styling Approaches Not Used in This Project
+#### 3.5.8 Styling Approaches Not Used in This Project
 
 The following approaches are valid in other projects but are **not part of this project's stack**. To keep styling consistent, do not introduce them without discussion.
 
@@ -468,7 +468,7 @@ The following approaches are valid in other projects but are **not part of this 
 | Emotion template tags (`` css`...` ``) | Emotion is used internally by MUI, but custom styling uses Tailwind; adding `css` tags would mix a third approach |
 | Headless UI | MUI already provides accessible UI primitives (menus, dialogs, selects); Headless UI would duplicate this |
 
-### 10. Quote Convention
+### 3.6. Quote Convention
 
 **Always use double quotes (`"`) for strings.** Enforced by Prettier (see `.prettierrc`).
 
@@ -491,7 +491,7 @@ const name = "hello";
 const greeting = `Hello ${name}`;
 ```
 
-### 11. Type Definition Patterns
+### 3.7. Type Definition Patterns
 
 #### Array-Then-Type Pattern
 
@@ -586,9 +586,9 @@ function processData(data: unknown): string {
 
 ---
 
-## Component Patterns
+## 4. Component Patterns
 
-### 12. Third-Party Component Wrapping
+### 4.1. Third-Party Component Wrapping
 
 **All third-party components MUST be wrapped with local components.**
 
@@ -625,7 +625,7 @@ import { RrDataGrid } from "@/components/controls/RrDataGrid";
 <RrDataGrid columns={columns} rows={rows} />;
 ```
 
-### 13. Selector Pattern Architecture
+### 4.2. Selector Pattern Architecture
 
 This section describes the architecture pattern used for selector controls (LanguageSelector, CurrencySelector, etc.) and explains the "dumb controls" principle.
 
@@ -828,9 +828,9 @@ export function getCurrencySymbol(code: string): string {
 
 ---
 
-## Integration & Services
+## 5. Integration & Services
 
-### 14. External API Calls
+### 5.1. External API Calls
 
 **All external calls (webhooks, APIs) must go through a dedicated service/wrapper.**
 
@@ -872,7 +872,7 @@ export const webhookService = {
 };
 ```
 
-### 15. Configuration Patterns
+### 5.2. Configuration Patterns
 
 #### Environment Variables
 
@@ -928,7 +928,7 @@ contact: {
 }
 ```
 
-### 16. Context and Hooks
+### 5.3. Context and Hooks
 
 #### Language Detection Priority
 
@@ -963,9 +963,9 @@ export function useLanguage() {
 
 ---
 
-## Error Handling & Validation
+## 6. Error Handling & Validation
 
-### 17. Error Handling
+### 6.1. Error Handling
 
 #### Error Boundary Pattern
 
@@ -991,7 +991,7 @@ Show detailed error info only in development:
 }
 ```
 
-### 18. Validation Organization
+### 6.2. Validation Organization
 
 #### Where to Put Validation Functions
 
@@ -1015,9 +1015,9 @@ export function validatePhoneNumber(data: PhoneInputData): boolean;
 
 ---
 
-## i18n Patterns
+## 7. i18n Patterns
 
-### 19. Translation System
+### 7.1. Translation System
 
 #### useTranslation Hook
 
@@ -1049,7 +1049,7 @@ getTranslationObject<ServiceItem[]>("services.items"); // Returns typed array/ob
 | Component-specific translations | Inside the component folder (e.g., `PhoneInput/phone.en.ts`) |
 | Site data labels | Translation files, NOT in `site-data.ts` |
 
-### 20. RTL Handling
+### 7.2. RTL Handling
 
 #### Phone Numbers Always LTR
 
@@ -1072,9 +1072,9 @@ document.documentElement.dir = language.isRTL ? "rtl" : "ltr";
 
 ---
 
-## Reference
+## 8. Reference
 
-### 21. Utility Functions
+### 8.1. Utility Functions
 
 #### URL Builders
 
@@ -1112,9 +1112,9 @@ parseFormattedNumber("1,000,000"); // "1000000"
 
 ---
 
-## Release & Versioning
+## 9. Release & Versioning
 
-### 22. Version Updates
+### 9.1. Version Updates
 
 When updating the project version:
 
@@ -1146,7 +1146,7 @@ When incrementing, determine which part to bump:
 - If there is a dilemma (e.g., changes could be considered either minor or patch), **ask the user** whether to bump MAJOR, MINOR, or PATCH.
 - If the user instructs a specific version bump, always follow the user's instruction regardless of the above guidelines.
 
-### 23. Git Commit Description
+### 9.2. Git Commit Description
 
 Write a single headline line in the format:
 
@@ -1166,7 +1166,7 @@ v{version}: {Main action} — {change1}, {change2}, {change3}
 v1.1.32: Refactor QuotationDocGenerator — extract utils, consolidate payment state, add JSON parse validation
 ```
 
-### 24. PR Description
+### 9.3. PR Description
 
 #### PR Title
 
@@ -1229,14 +1229,14 @@ Group all changes by topic/concern. Related changes stay together regardless of 
 - After writing the description, ask the user if they prefer a rewrite using the **By Change Type** format. If the user says yes, rewrite the full description in that format.
 - If the user instructs a specific format, follow the user's instruction.
 
-### 25. Preparing a Commit
+### 9.4. Preparing a Commit
 
 When asked to **"prepare the commit"**, perform both steps:
 
-1. **Update the version** (as defined in section 22)
-2. **Write the commit description** (as defined in section 23)
+1. **Update the version** (as defined in section 9.1)
+2. **Write the commit description** (as defined in section 9.2)
 
-After writing the commit description, **ask the user** whether they also want a PR description written (as defined in section 24).
+After writing the commit description, **ask the user** whether they also want a PR description written (as defined in section 9.3).
 
 When asked only to **"write the commit description"** — write the description only, do not update the version.
 
@@ -1253,9 +1253,9 @@ When asked only to **"write the PR description"** — write the PR description o
 
 ---
 
-## Task Management
+## 10. Task Management
 
-### 26. Task Management
+### 10.1. Task Management
 
 #### Task Files
 
@@ -1302,7 +1302,7 @@ Tasks must be kept in **ascending order by ID** in all three files.
 
 ---
 
-### Summary Checklist
+### 10.2. Summary Checklist
 
 Before submitting any code:
 

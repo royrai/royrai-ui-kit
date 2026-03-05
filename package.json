@@ -1,6 +1,6 @@
 {
   "name": "@royrai/ui-kit",
-  "version": "1.0.00",
+  "version": "1.0.01",
   "description": "Reusable React/TypeScript UI component library built on MUI with bilingual (Hebrew/English) support",
   "license": "MIT",
   "author": "royrai",
