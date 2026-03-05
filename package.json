@@ -1,6 +1,6 @@
 {
   "name": "@royrai/ui-kit",
-  "version": "0.1.02",
+  "version": "1.0.00",
   "description": "Reusable React/TypeScript UI component library built on MUI with bilingual (Hebrew/English) support",
   "license": "MIT",
   "author": "royrai",
@@ -24,6 +24,70 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
+    },
+    "./controls/RrBox": {
+      "types": "./dist/controls/RrBox/index.d.ts",
+      "import": "./dist/controls/RrBox/index.js",
+      "require": "./dist/controls/RrBox/index.cjs"
+    },
+    "./controls/RrBox/mui": {
+      "types": "./dist/controls/RrBox/mui/index.d.ts",
+      "import": "./dist/controls/RrBox/mui/index.js",
+      "require": "./dist/controls/RrBox/mui/index.cjs"
+    },
+    "./controls/RrDataGrid": {
+      "types": "./dist/controls/RrDataGrid/index.d.ts",
+      "import": "./dist/controls/RrDataGrid/index.js",
+      "require": "./dist/controls/RrDataGrid/index.cjs"
+    },
+    "./controls/RrDataGrid/mui": {
+      "types": "./dist/controls/RrDataGrid/mui/index.d.ts",
+      "import": "./dist/controls/RrDataGrid/mui/index.js",
+      "require": "./dist/controls/RrDataGrid/mui/index.cjs"
+    },
+    "./controls/RrSocialIcons": {
+      "types": "./dist/controls/RrSocialIcons/index.d.ts",
+      "import": "./dist/controls/RrSocialIcons/index.js",
+      "require": "./dist/controls/RrSocialIcons/index.cjs"
+    },
+    "./controls/RrTimeWheelColumn": {
+      "types": "./dist/controls/RrTimeWheelColumn/index.d.ts",
+      "import": "./dist/controls/RrTimeWheelColumn/index.js",
+      "require": "./dist/controls/RrTimeWheelColumn/index.cjs"
+    },
+    "./controls/RrTimeWheelPicker": {
+      "types": "./dist/controls/RrTimeWheelPicker/index.d.ts",
+      "import": "./dist/controls/RrTimeWheelPicker/index.js",
+      "require": "./dist/controls/RrTimeWheelPicker/index.cjs"
+    },
+    "./controls/RoyraiCopyright": {
+      "types": "./dist/controls/RoyraiCopyright/index.d.ts",
+      "import": "./dist/controls/RoyraiCopyright/index.js",
+      "require": "./dist/controls/RoyraiCopyright/index.cjs"
+    },
+    "./controls/RoyraiCredit": {
+      "types": "./dist/controls/RoyraiCredit/index.d.ts",
+      "import": "./dist/controls/RoyraiCredit/index.js",
+      "require": "./dist/controls/RoyraiCredit/index.cjs"
+    },
+    "./controls/RrCopyright": {
+      "types": "./dist/controls/RrCopyright/index.d.ts",
+      "import": "./dist/controls/RrCopyright/index.js",
+      "require": "./dist/controls/RrCopyright/index.cjs"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "controls/RrBox": ["./dist/controls/RrBox/index.d.ts"],
+      "controls/RrBox/mui": ["./dist/controls/RrBox/mui/index.d.ts"],
+      "controls/RrDataGrid": ["./dist/controls/RrDataGrid/index.d.ts"],
+      "controls/RrDataGrid/mui": ["./dist/controls/RrDataGrid/mui/index.d.ts"],
+      "controls/RrSocialIcons": ["./dist/controls/RrSocialIcons/index.d.ts"],
+      "controls/RrTimeWheelColumn": ["./dist/controls/RrTimeWheelColumn/index.d.ts"],
+      "controls/RrTimeWheelPicker": ["./dist/controls/RrTimeWheelPicker/index.d.ts"],
+      "controls/RoyraiCopyright": ["./dist/controls/RoyraiCopyright/index.d.ts"],
+      "controls/RoyraiCredit": ["./dist/controls/RoyraiCredit/index.d.ts"],
+      "controls/RrCopyright": ["./dist/controls/RrCopyright/index.d.ts"]
     }
   },
   "files": [
@@ -31,6 +95,14 @@
     "README.md",
     "LICENSE"
   ],
+  "peerDependenciesMeta": {
+    "@emotion/react": { "optional": true },
+    "@emotion/styled": { "optional": true },
+    "@mui/icons-material": { "optional": true },
+    "@mui/material": { "optional": true },
+    "@mui/x-data-grid": { "optional": true },
+    "@mui/x-date-pickers": { "optional": true }
+  },
   "peerDependencies": {
     "@emotion/react": "^11.0.0",
     "@emotion/styled": "^11.0.0",

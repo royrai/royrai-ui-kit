@@ -19,7 +19,7 @@ export type RrGridColDef = GridColDef;
 export type RrRowData = GridRowsProp;
 
 /**
- * Props for RrDataGrid component
+ * Props for RrDataGrid component — MUI variant
  */
 export interface RrDataGridProps {
   /** Column definitions */

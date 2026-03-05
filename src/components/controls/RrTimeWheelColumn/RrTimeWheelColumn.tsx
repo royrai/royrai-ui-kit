@@ -1,13 +1,7 @@
 import { useRef, useEffect, useCallback, useMemo, useState } from "react";
+import { type RrTimeWheelColumnProps } from "./RrTimeWheelColumn.types";
 
-export interface RrTimeWheelColumnProps {
-  maxValue: number;
-  value: number;
-  onChange: (value: number) => void;
-  primaryColor: string;
-  highlightBackground: string;
-  fadeColor: string;
-}
+export type { RrTimeWheelColumnProps } from "./RrTimeWheelColumn.types";
 
 const ITEM_HEIGHT = 44;
 const COLUMN_HEIGHT = 150;
