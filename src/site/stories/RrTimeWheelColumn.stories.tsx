@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { RrTimeWheelColumn } from "../components/controls/RrTimeWheelColumn";
+import { RrTimeWheelColumn } from "../../lib/components/controls/RrTimeWheelColumn";
 
 const meta: Meta<typeof RrTimeWheelColumn> = {
   title: "Controls/RrTimeWheelColumn",

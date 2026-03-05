@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { RrDataGrid } from "../components/controls/RrDataGrid";
+import { RrDataGrid } from "../../lib/components/controls/RrDataGrid";
 
 const meta: Meta<typeof RrDataGrid> = {
   title: "Controls/RrDataGrid",

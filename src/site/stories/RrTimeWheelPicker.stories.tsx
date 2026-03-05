@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { RrTimeWheelPicker, type RrTimeWheelPickerValue } from "../components/controls/RrTimeWheelPicker";
+import { RrTimeWheelPicker, type RrTimeWheelPickerValue } from "../../lib/components/controls/RrTimeWheelPicker";
 
 const meta: Meta<typeof RrTimeWheelPicker> = {
   title: "Controls/RrTimeWheelPicker",

@@ -6,7 +6,7 @@ import {
   LinkedInIcon,
   FacebookIcon,
   EmailIcon,
-} from "../components/controls/RrSocialIcons";
+} from "../../lib/components/controls/RrSocialIcons";
 
 const meta: Meta = {
   title: "Controls/RrSocialIcons",
