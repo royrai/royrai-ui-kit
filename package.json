@@ -1,6 +1,6 @@
 {
   "name": "@royrai/ui-kit",
-  "version": "1.1.00",
+  "version": "1.1.01",
   "description": "Reusable React/TypeScript UI component library built on MUI with bilingual (Hebrew/English) support",
   "license": "MIT",
   "author": "royrai",
@@ -18,64 +18,64 @@
     "build": "vite build && storybook build -o site-dist/storybook",
     "prepublishOnly": "yarn typecheck && yarn build:lib"
   },
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     },
     "./controls/RrBox": {
       "types": "./dist/controls/RrBox/index.d.ts",
-      "import": "./dist/controls/RrBox/index.js",
-      "require": "./dist/controls/RrBox/index.cjs"
+      "import": "./dist/controls/RrBox/index.mjs",
+      "require": "./dist/controls/RrBox/index.js"
     },
     "./controls/RrBox/mui": {
       "types": "./dist/controls/RrBox/mui/index.d.ts",
-      "import": "./dist/controls/RrBox/mui/index.js",
-      "require": "./dist/controls/RrBox/mui/index.cjs"
+      "import": "./dist/controls/RrBox/mui/index.mjs",
+      "require": "./dist/controls/RrBox/mui/index.js"
     },
     "./controls/RrDataGrid": {
       "types": "./dist/controls/RrDataGrid/index.d.ts",
-      "import": "./dist/controls/RrDataGrid/index.js",
-      "require": "./dist/controls/RrDataGrid/index.cjs"
+      "import": "./dist/controls/RrDataGrid/index.mjs",
+      "require": "./dist/controls/RrDataGrid/index.js"
     },
     "./controls/RrDataGrid/mui": {
       "types": "./dist/controls/RrDataGrid/mui/index.d.ts",
-      "import": "./dist/controls/RrDataGrid/mui/index.js",
-      "require": "./dist/controls/RrDataGrid/mui/index.cjs"
+      "import": "./dist/controls/RrDataGrid/mui/index.mjs",
+      "require": "./dist/controls/RrDataGrid/mui/index.js"
     },
     "./controls/RrSocialIcons": {
       "types": "./dist/controls/RrSocialIcons/index.d.ts",
-      "import": "./dist/controls/RrSocialIcons/index.js",
-      "require": "./dist/controls/RrSocialIcons/index.cjs"
+      "import": "./dist/controls/RrSocialIcons/index.mjs",
+      "require": "./dist/controls/RrSocialIcons/index.js"
     },
     "./controls/RrTimeWheelColumn": {
       "types": "./dist/controls/RrTimeWheelColumn/index.d.ts",
-      "import": "./dist/controls/RrTimeWheelColumn/index.js",
-      "require": "./dist/controls/RrTimeWheelColumn/index.cjs"
+      "import": "./dist/controls/RrTimeWheelColumn/index.mjs",
+      "require": "./dist/controls/RrTimeWheelColumn/index.js"
     },
     "./controls/RrTimeWheelPicker": {
       "types": "./dist/controls/RrTimeWheelPicker/index.d.ts",
-      "import": "./dist/controls/RrTimeWheelPicker/index.js",
-      "require": "./dist/controls/RrTimeWheelPicker/index.cjs"
+      "import": "./dist/controls/RrTimeWheelPicker/index.mjs",
+      "require": "./dist/controls/RrTimeWheelPicker/index.js"
     },
     "./controls/RoyraiCopyright": {
       "types": "./dist/controls/RoyraiCopyright/index.d.ts",
-      "import": "./dist/controls/RoyraiCopyright/index.js",
-      "require": "./dist/controls/RoyraiCopyright/index.cjs"
+      "import": "./dist/controls/RoyraiCopyright/index.mjs",
+      "require": "./dist/controls/RoyraiCopyright/index.js"
     },
     "./controls/RoyraiCredit": {
       "types": "./dist/controls/RoyraiCredit/index.d.ts",
-      "import": "./dist/controls/RoyraiCredit/index.js",
-      "require": "./dist/controls/RoyraiCredit/index.cjs"
+      "import": "./dist/controls/RoyraiCredit/index.mjs",
+      "require": "./dist/controls/RoyraiCredit/index.js"
     },
     "./controls/RrCopyright": {
       "types": "./dist/controls/RrCopyright/index.d.ts",
-      "import": "./dist/controls/RrCopyright/index.js",
-      "require": "./dist/controls/RrCopyright/index.cjs"
+      "import": "./dist/controls/RrCopyright/index.mjs",
+      "require": "./dist/controls/RrCopyright/index.js"
     }
   },
   "typesVersions": {
