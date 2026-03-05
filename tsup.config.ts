@@ -28,7 +28,7 @@ export default defineConfig({
     "react",
     "react-dom",
     "@mui/material",
-    "@mui/icons-material",
+
     "@mui/x-data-grid",
     "@mui/x-date-pickers",
     "@emotion/react",
